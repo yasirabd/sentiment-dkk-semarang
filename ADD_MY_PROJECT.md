@@ -9,11 +9,12 @@
     ```
     python -m virtualenv <nama folder> --python=python3.8
     ```
-Misalkan
+
+    Misalkan disini membuat folder `env`.
     ```
     E:\DSI\research>python -m virtualenv env --python=python3.8
     ```
-Secara otomatis akan terbentuk folder `env`.
+    Secara otomatis akan terbentuk folder `env`.
 
 3. Aktifkan environment dengan perintah berikut (windows).
     ```
