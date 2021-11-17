@@ -4,6 +4,10 @@ from datetime import datetime
 import plotly.express as px
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import re
+from collections import Counter
 
 
 st.set_page_config(layout="wide")
@@ -15,7 +19,7 @@ menu_choice = st.sidebar.selectbox("Select a menu", list_menu)
 ### MENU: HOME ###
 if menu_choice == 'Home':
     st.markdown(f'<h1 style="font-weight:bolder;font-size:40px;color:black;text-align:center;">Sentiment Analysis Komentar Instagram</h1>', unsafe_allow_html=True)
-    st.markdown(f'<h3 style="font-weight:normal;font-size:18px;color:gray;text-align:center;">Studi Kasus: Dinas Kesehatan Kota Semarang (@dkksemarang)</h1>', unsafe_allow_html=True)
+    st.markdown(f'<h3 style="font-weight:normal;font-size:18px;color:gray;text-align:center;">Study Case: Dinas Kesehatan Kota Semarang (@dkksemarang)</h1>', unsafe_allow_html=True)
 
     # read dataset
     df_comments = pd.read_csv('../data/data_complete_visualization.csv')
@@ -60,7 +64,6 @@ if menu_choice == 'Home':
         with col2:
             mode_chart = st.radio("Select your chart mode:", ['All', 'Filter by Month'])
 
-
         if mode_chart == 'Filter by Month':
             selected_time = st.slider(
                 "Select month",
@@ -77,6 +80,9 @@ if menu_choice == 'Home':
                 coronas['Tanggal'].dt.year == filter_year)]
             sentiment_counter_filter = sentiment_counter[(sentiment_counter['date'].dt.month == filter_month) & (
                 sentiment_counter['date'].dt.year == filter_year)]
+            comments = comments[(comments['datetime'].dt.month == filter_month) & (
+                comments['datetime'].dt.year == filter_year)]
+
         elif mode_chart == 'All':
             coronas_filter = coronas[(coronas['Tanggal'] >= min_datetime) & (coronas['Tanggal'] <= max_datetime)]
             sentiment_counter_filter = sentiment_counter[(sentiment_counter['date'] >= min_datetime) & (sentiment_counter['date'] <= max_datetime)]
@@ -129,3 +135,151 @@ if menu_choice == 'Home':
     # margin legend
     # fig.update_layout(margin=dict(r=25))
     st.plotly_chart(fig, use_container_width=True)
+
+
+    # WORD CLOUD
+
+    # filter data for each sentiment
+    neutral = comments[comments.label == "neutral"]
+    positive = comments[comments.label == "positive"]
+    negative = comments[comments.label == "negative"]
+
+    # create slider for the number of words
+    n_words = st.slider("Set the number of words in Word Cloud", min_value=50, max_value=200, step=10)
+
+    # create 3 columns
+    col1, col2, col3 = st.columns(3)
+
+    # neutral
+    with col1:
+        texts = ''
+        for val in neutral['text']:
+            val = str(val)
+            tokens = val.split()
+            for i in range(len(tokens)):
+                tokens[i] =  re.sub(r'[^\x00-\x7F]+',' ', tokens[i])
+                tokens[i] = tokens[i].strip()
+            texts += " ".join(tokens)+" "
+        wc = WordCloud(
+            colormap="Blues",
+            mode="RGBA",
+            max_words=n_words,
+            background_color="white",
+            collocations=False,
+            width=400, height=400,
+        )
+        wc.generate(texts)
+
+        st.markdown("#### Sentiment Neutral", unsafe_allow_html=False)
+        # plot
+        fig = plt.figure(figsize=(20, 8), dpi=80)
+        plt.imshow(wc, interpolation='bilinear')
+        plt.axis("off")
+        plt.tight_layout()
+        st.pyplot(fig)
+
+        # top 10 words 
+        top10 = Counter(texts.split()).most_common(10)
+        df_top10 = pd.DataFrame(top10, columns=['word','freq'])
+        df_top10 = df_top10.sort_values(by='freq', ascending=True)
+
+        # plot
+        fig_bar = px.bar(df_top10, x="freq", y="word",
+                         orientation='h', height=400, width=350)
+        fig_bar.update_layout(title_text='Top 10 words sentiment neutral',
+                        plot_bgcolor='rgb(275, 270, 273)')
+        fig_bar.update_traces(marker_color='lightblue')
+
+        # Set x-axes and y-axes titles
+        fig_bar.update_yaxes(title_text="")
+        fig_bar.update_xaxes(title_text="frequency")
+        st.plotly_chart(fig_bar)
+
+    # positive
+    with col2:
+        texts = ''
+        for val in positive['text']:
+            val = str(val)
+            tokens = val.split()
+            for i in range(len(tokens)):
+                tokens[i] =  re.sub(r'[^\x00-\x7F]+',' ', tokens[i])
+                tokens[i] = tokens[i].strip()
+            texts += " ".join(tokens)+" "
+        wc = WordCloud(
+            colormap="Greens",
+            mode="RGBA",
+            max_words=n_words,
+            background_color="white",
+            collocations=False,
+            width=400, height=400,
+        )
+        wc.generate(texts)
+
+        st.markdown("#### Sentiment Positive", unsafe_allow_html=False)
+        # plot
+        fig = plt.figure(figsize=(20, 8), dpi=80)
+        plt.imshow(wc, interpolation='bilinear')
+        plt.axis("off")
+        plt.tight_layout()
+        st.pyplot(fig)
+
+        # top 10 words
+        top10 = Counter(texts.split()).most_common(10)
+        df_top10 = pd.DataFrame(top10, columns=['word', 'freq'])
+        df_top10 = df_top10.sort_values(by='freq', ascending=True)
+
+        # plot
+        fig_bar = px.bar(df_top10, x="freq", y="word",
+                         orientation='h', height=400, width=350)
+        fig_bar.update_layout(title_text='Top 10 words sentiment positive',
+                              plot_bgcolor='rgb(275, 270, 273)')
+        fig_bar.update_traces(marker_color='lightgreen')
+
+        # Set x-axes and y-axes titles
+        fig_bar.update_yaxes(title_text="")
+        fig_bar.update_xaxes(title_text="frequency")
+        st.plotly_chart(fig_bar)
+    # negative
+    with col3:
+        texts = ''
+        for val in negative['text']:
+            val = str(val)
+            tokens = val.split()
+            for i in range(len(tokens)):
+                tokens[i] =  re.sub(r'[^\x00-\x7F]+',' ', tokens[i])
+                tokens[i] = tokens[i].strip()
+            texts += " ".join(tokens)+" "
+        wc = WordCloud(
+            colormap="Reds",
+            mode="RGBA",
+            max_words=n_words,
+            background_color="white",
+            collocations=False,
+            width=400, height=400,
+        )
+        wc.generate(texts)
+
+        st.markdown("#### Sentiment Negative", unsafe_allow_html=False)
+        # plot
+        fig = plt.figure(figsize=(20, 8), dpi=80)
+        plt.imshow(wc, interpolation='bilinear')
+        plt.axis("off")
+        plt.tight_layout()
+        st.pyplot(fig)
+
+        # top 10 words
+        top10 = Counter(texts.split()).most_common(10)
+        df_top10 = pd.DataFrame(top10, columns=['word', 'freq'])
+        df_top10 = df_top10.sort_values(by='freq', ascending=True)
+
+        # plot
+        fig_bar = px.bar(df_top10, x="freq", y="word",
+                         orientation='h', height=400, width=350)
+        fig_bar.update_layout(title_text='Top 10 words sentiment negative',
+                              plot_bgcolor='rgb(275, 270, 273)')
+        fig_bar.update_traces(marker_color='red')
+
+        # Set x-axes and y-axes titles
+        fig_bar.update_yaxes(title_text="")
+        fig_bar.update_xaxes(title_text="frequency")
+        st.plotly_chart(fig_bar)
