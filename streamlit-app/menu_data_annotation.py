@@ -11,11 +11,12 @@ def display_data_annotation():
     '''
     st.markdown(text, unsafe_allow_html=True)
     st.info("Note: data yang dilakukan anotasi hanya pada rentang waktu awal kasus Covid-19 di Semarang yaitu tanggal `3 Maret 2020` hingga seterusnya")
+    
     text = '''
-    Sehingga setelah difilter berdasarkan rentang waktu, didapatkan data sebanyak `9092 data`.
+    Sehingga setelah difilter berdasarkan rentang waktu, didapatkan data sebanyak `9959 data`.
 
     ### Metode pelabelan
-    Pelabelan dilakukan oleh semua anggota team dengan masing-masing anggota melakukan anotasi sebanyak kurang lebih `1818 data`.
+    Pelabelan dilakukan oleh semua anggota team dengan masing-masing anggota melakukan anotasi sebanyak kurang lebih `1991 data`.
 
     Untuk panduan pelabelan `neutral`, `positive`, dan `negative` mengacu pada metode/aturan berikut:
     - Positive
@@ -34,12 +35,10 @@ def display_data_annotation():
     Pelabelan menggunakan open source annotation tool `doccano`.
     '''
     st.markdown(text, unsafe_allow_html=True)
-    st.warning(
-        "Doccano yang digunakan versi 1.2.4 karena yang bisa berjalan pada windows")
+
+    st.warning("Doccano yang digunakan versi 1.2.4 karena yang bisa berjalan pada windows")
     doccano = Image.open('../images/doccano.png')
     st.image(doccano, caption='', width=300)
-
-  
     st.markdown("Proses melakukan anotasi label menggunakan `doccano` seperti video di bawah.")
     st.markdown(f'<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/55e2689eee9f4855951959e9bcf02696" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>', unsafe_allow_html=True)
     st.markdown(f'<br>', unsafe_allow_html=True)
@@ -49,8 +48,9 @@ def display_data_annotation():
     Berikut hasil pelabelan yang dilakukan.
     '''
     st.markdown(text, unsafe_allow_html=True)
-    df_label_composition = pd.DataFrame([['neutral', 3127], ['positive', 2620], [
-                                        'negative', 3345]], columns=['sentiment', 'frequency'])
+
+    df_label_composition = pd.DataFrame([['neutral', 3658], ['positive', 2832], [
+                                        'negative', 3469]], columns=['sentiment', 'frequency'])
     col1, col2 = st.columns(2)
     with col1:
         st.table(df_label_composition)

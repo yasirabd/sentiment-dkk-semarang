@@ -23,12 +23,9 @@ def display_home():
     df_comments['datetime'] = pd.to_datetime(df_comments['datetime'])
     df_coronas['Tanggal'] = pd.to_datetime(df_coronas['Tanggal'])
     df_sentiment_counter['date'] = pd.to_datetime(df_sentiment_counter['date'])
-    df_sentiment_counter['neutral'] = pd.to_numeric(
-        df_sentiment_counter['neutral'])
-    df_sentiment_counter['positive'] = pd.to_numeric(
-        df_sentiment_counter['positive'])
-    df_sentiment_counter['negative'] = pd.to_numeric(
-        df_sentiment_counter['negative'])
+    df_sentiment_counter['neutral'] = pd.to_numeric(df_sentiment_counter['neutral'])
+    df_sentiment_counter['positive'] = pd.to_numeric(df_sentiment_counter['positive'])
+    df_sentiment_counter['negative'] = pd.to_numeric(df_sentiment_counter['negative'])
 
     # select chart type
     chart_type = st.radio("Choose your chart type:", ['All ', 'Filter'])
@@ -43,8 +40,7 @@ def display_home():
 
         # Filter by data type
         with col1:
-            selected_data = st.selectbox(
-                'Select data type', ["Data for Development", "Data for Inference"])
+            selected_data = st.selectbox('Select data type', ["Data for Development", "Data for Inference"])
 
             if selected_data == "Data for Development":
                 comments = comments[comments.data_type == 'development']
@@ -59,9 +55,9 @@ def display_home():
             max_datetime = comments['datetime'].max()
 
         with col2:
-            mode_chart = st.radio("Select your chart mode:", [
-                                  'All', 'Filter by Month'])
+            mode_chart = st.radio("Select your chart mode:", ['All', 'Filter by Month'])
 
+        # add condition for choosing chart mode
         if mode_chart == 'Filter by Month':
             selected_time = st.slider(
                 "Select month",
@@ -90,13 +86,11 @@ def display_home():
             st.caption('__*Filtered by ' + selected_data + ' from ' + min_datetime.strftime(
                 "%d %b %Y") + ' to ' + max_datetime.strftime("%d %b %Y") + '*__')
 
+    # All data
     else:
         comments = df_comments.copy()
-        coronas = df_coronas.copy()
-        sentiment_counter = df_sentiment_counter.copy()
-
-        coronas_filter = coronas.copy()
-        sentiment_counter_filter = sentiment_counter.copy()
+        coronas_filter = df_coronas.copy()
+        sentiment_counter_filter = df_sentiment_counter.copy()
 
     # make plot
     fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -123,10 +117,8 @@ def display_home():
         plot_bgcolor='rgb(275, 270, 273)'
     )
     # Set y-axes titles
-    fig.update_yaxes(title_text="Number of Sentiments",
-                     secondary_y=True, rangemode='tozero')
-    fig.update_yaxes(title_text="Number of Cases",
-                     secondary_y=False, rangemode='tozero')
+    fig.update_yaxes(title_text="Number of Sentiments", secondary_y=True, rangemode='tozero')
+    fig.update_yaxes(title_text="Number of Cases", secondary_y=False, rangemode='tozero')
     st.plotly_chart(fig, use_container_width=True)
 
     # WORD CLOUD
