@@ -110,7 +110,7 @@ def display_data_preprocessing():
     ```
 
     Setelah dilakukan `tokenization`:
-    ```python
+    ```
     [terima, kasih, infonya, ayo, lengah, semangat, pandemi, ikuti, protokol, kesehatan, 
     tangan_berdoa, tangan_berdoa, tangan_berdoa]
     ```
