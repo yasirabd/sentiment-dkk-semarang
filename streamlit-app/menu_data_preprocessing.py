@@ -114,5 +114,26 @@ def display_data_preprocessing():
     [terima, kasih, infonya, ayo, lengah, semangat, pandemi, ikuti, protokol, kesehatan, 
     tangan_berdoa, tangan_berdoa, tangan_berdoa]
     ```
+
+    ## Split data into data train and data test
+    Tahap ini membagi dataset menjadi data `train` dan data `test`.
+    - Data `train` digunakan untuk melatih model machine learning.
+    - Data `test` digunakan untuk mengetahui performa model machine learning terhadap data baru.
+
+    Pembagian dataset `train` : `test` = 80% : 20%.
+    ```python
+    from sklearn.model_selection import train_test_split
+
+    train, test = train_test_split(data, 
+                                test_size=0.2,
+                                random_state=2021,
+                                stratify=data['label'])
+    ```
+    Parameter `stratify` pada `train_test_split` digunakan untuk menjaga komposisi perbandingan label sentiment
+    ketika membagi dataset.
+
+    Hasilnya setelah dataset dibagi:
+    - `train`: 7967 baris, 5 kolom
+    - `test`: 1992 baris, 5 kolom
     """
     st.markdown(text, unsafe_allow_html=True)
