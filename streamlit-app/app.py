@@ -4,12 +4,14 @@ from menu_data_collection import display_data_collection
 from menu_data_annotation import display_data_annotation
 from menu_eda import display_eda
 from menu_data_preprocessing import display_data_preprocessing
+from menu_feature_extraction import display_feature_extraction
 
 
 st.set_page_config(layout="wide")
 
 # menu sidebar
-list_menu = ['Home', 'Data Collection', 'Data Annotation', 'Exploratory Data Analysis', 'Data Preprocessing', 'Modeling', 'Evaluation', 'Deployment']
+list_menu = ['Home', 'Data Collection', 'Data Annotation', 'Exploratory Data Analysis', 'Data Preprocessing', 
+             'Feature Extraction', 'Modeling', 'Evaluation', 'Deployment']
 menu_choice = st.sidebar.selectbox("Select a menu", list_menu)
 
 ### MENU: HOME ###
@@ -31,3 +33,7 @@ if menu_choice == 'Exploratory Data Analysis':
 ### MENU: DATA PREPROCESSING ###
 if menu_choice == 'Data Preprocessing':
     display_data_preprocessing()
+
+### MENU: FEATURE EXTRACTION ###
+if menu_choice == 'Feature Extraction':
+    display_feature_extraction()
