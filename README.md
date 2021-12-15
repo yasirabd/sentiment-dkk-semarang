@@ -1,22 +1,24 @@
 # Sentiment Analysis on Instagram Dinas Kesehatan Kota Semarang
+
 Repository research Sentiment Analysis dari komentar Instagram Dinas Kesehatan Kota Semarang oleh Divisi Research Data Science Indonesia Chapter Jawa Tengah
 
 Folder structures:
-- `data`: data related to this project
-- `gradio-app`: demo model inference with gradio
-- `images`: image assets
-- `models`: saved models after training
-- `notebooks`: jupyter notebooks
-- `scraper`: tools for scraping data
-- `streamlit-app`: deployment with streamlit
 
-# How to use
+- `data`: data yang digunakan pada proyek.
+- `images`: aset gambar.
+- `models`: model-model machine learning dengan format `.joblib` dan `.h5`.
+- `notebooks`: kumpulan notebook.
+- `scraper`: *tools* untuk *scraping* data komentar Instagram.
+
+## How to use
+
 1. Clone repositori ini
-2. Buat file `.env` pada folder parent `sentiment-dkk-semarang` dan isi dari `example.env` yang sudah dilengkapi.
+2. Buat file `.env`, kemudian isi menggunakan contoh dari `example.env`.
 
 ## Teams
-1. 
-2. 
-3. 
-4.
-5. 
+
+1. Alfi Fauziah H
+2. Annisa P A
+3. Javas Alfreda
+4. Muhammad Aghassi
+5. Yasir Abdur Rohman
