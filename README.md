@@ -22,7 +22,7 @@ Folder structures:
 Anda bisa mengakses proses dan hasil *research* disini:
 
 - [Streamlit Sentiment Analysis Komentar Instagram](https://share.streamlit.io/yasirabd/streamlit-sentiment-dkk-smg/main/app.py)
-- [Gradio Analisis Sentimen Komentar](https://share.streamlit.io/yasirabd/streamlit-sentiment-dkk-smg/main/app.py)
+- [Gradio Analisis Sentimen Komentar](https://shrouded-dusk-24137.herokuapp.com/)
 
 ## Teams 🤗
 
